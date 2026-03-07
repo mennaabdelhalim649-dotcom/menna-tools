@@ -1,0 +1,331 @@
+
+ <!DOCTYPE html>
+<html>
+
+<head>
+<title>My Tools Website</title>
+
+<style>
+.footer{
+margin-top:40px;
+padding:20px;
+background:#222;
+color:white;
+font-size:16px;
+animation:fadeIn 2s ease-in-out;
+}
+
+.footer b{
+color:#4da6ff;
+animation:pulse 2s infinite;
+}
+
+@keyframes fadeIn{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+@keyframes pulse{
+0%{
+transform:scale(1);
+}
+50%{
+transform:scale(1.1);
+}
+100%{
+transform:scale(1);
+}
+}
+footer{
+margin-top:40px;
+padding:15px;
+background:#222;
+color:white;
+font-size:14px;
+}
+
+body{
+font-family:Arial;
+background:#f4f6fb;
+margin:0;
+padding:0;
+}
+
+h1{
+background:#2563eb;
+color:white;
+padding:20px;
+margin:0;
+}
+
+.container{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:25px;
+padding:40px;
+}
+
+.box{
+background:white;
+width:260px;
+padding:25px;
+border-radius:12px;
+box-shadow:0 5px 20px rgba(0,0,0,0.1);
+transition:0.3s;
+}
+
+.box:hover{
+transform:translateY(-5px);
+}
+
+button{
+padding:10px 20px;
+background:#2563eb;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+margin-top:10px;
+}
+
+button:hover{
+background:#1d4ed8;
+}
+
+textarea{
+width:100%;
+height:80px;
+margin-top:10px;
+}
+
+input{
+margin-top:10px;
+}
+
+</style>
+</head>
+<footer>
+Created with ❤️ by <b>Eng Menna</b>
+</footer>
+<body>
+
+<h1>My Tools Website</h1>
+
+<div class="container">
+
+<div class="box">
+<h3>Video to MP3</h3>
+<input type="file" id="videoFile" accept="video/*"><br>
+<button onclick="videoToMP3()">Convert</button><br><br>
+<a id="downloadLink"></a>
+</div>
+
+<div class="box">
+<h3>Image to PDF</h3>
+<input type="file" id="imageFile" accept="image/*"><br>
+<button onclick="imageToPDF()">Convert</button>
+</div>
+
+<div class="box">
+<h3>Word to PDF</h3>
+<textarea id="wordtext" placeholder="Paste word text"></textarea><br>
+<button onclick="wordToPDF()">Convert</button>
+</div>
+
+<div class="box">
+<h3>PDF to Word</h3>
+<textarea id="pdftext" placeholder="Paste PDF text"></textarea><br>
+<button onclick="pdfToWord()">Download Word</button>
+</div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+
+const { jsPDF } = window.jspdf;
+
+function imageToPDF(){
+
+const file=document.getElementById("imageFile").files[0];
+
+const reader=new FileReader();
+
+reader.onload=function(e){
+
+const pdf=new jsPDF();
+
+pdf.addImage(e.target.result,'JPEG',10,10,180,160);
+
+pdf.save("image.pdf");
+
+}
+
+reader.readAsDataURL(file);
+
+}
+
+function wordToPDF(){
+
+const text=document.getElementById("wordtext").value;
+
+const pdf=new jsPDF();
+
+pdf.text(text,10,10);
+
+pdf.save("word.pdf");
+
+}
+
+function pdfToWord(){
+
+const text=document.getElementById("pdftext").value;
+
+const blob=new Blob([text],{type:"application/msword"});
+
+const link=document.createElement("a");
+
+link.href=URL.createObjectURL(blob);
+
+link.download="file.doc";
+
+link.click();
+
+}
+
+async function videoToMP3(){
+
+const file=document.getElementById("videoFile").files[0];
+
+if(!file){
+
+alert("Choose a video");
+
+return;
+
+}
+
+const link=document.getElementById("downloadLink");
+
+link.innerText="Processing...";
+
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+const arrayBuffer = await file.arrayBuffer();
+
+const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+
+const offlineContext = new OfflineAudioContext(
+audioBuffer.numberOfChannels,
+audioBuffer.length,
+audioBuffer.sampleRate
+);
+
+const source = offlineContext.createBufferSource();
+
+source.buffer = audioBuffer;
+
+source.connect(offlineContext.destination);
+
+source.start();
+
+const renderedBuffer = await offlineContext.startRendering();
+
+const wavBlob = bufferToWave(renderedBuffer, renderedBuffer.length);
+
+const url = URL.createObjectURL(wavBlob);
+
+link.href=url;
+
+link.download="audio.wav";
+
+link.innerText="Download Audio";
+
+}
+
+function bufferToWave(abuffer,len){
+
+const numOfChan = abuffer.numberOfChannels;
+
+const length = len * numOfChan * 2 + 44;
+
+const buffer = new ArrayBuffer(length);
+
+const view = new DataView(buffer);
+
+const channels = [];
+
+let offset = 0;
+
+let pos = 0;
+
+function setUint16(data){
+
+view.setUint16(pos,data,true);
+
+pos+=2;
+
+}
+
+function setUint32(data){
+
+view.setUint32(pos,data,true);
+
+pos+=4;
+
+}
+
+setUint32(0x46464952);
+setUint32(length-8);
+setUint32(0x45564157);
+
+setUint32(0x20746d66);
+setUint32(16);
+setUint16(1);
+setUint16(numOfChan);
+setUint32(abuffer.sampleRate);
+setUint32(abuffer.sampleRate*2*numOfChan);
+setUint16(numOfChan*2);
+setUint16(16);
+
+setUint32(0x61746164);
+setUint32(length-pos-4);
+
+for(let i=0;i<abuffer.numberOfChannels;i++){
+channels.push(abuffer.getChannelData(i));
+}
+
+while(pos<length){
+
+for(let i=0;i<numOfChan;i++){
+
+let sample=Math.max(-1,Math.min(1,channels[i][offset]));
+
+sample=(0.5+sample<0?sample*32768:sample*32767)|0;
+
+view.setInt16(pos,sample,true);
+
+pos+=2;
+
+}
+
+offset++;
+
+}
+
+return new Blob([buffer],{type:"audio/wav"});
+
+}
+
+</script>
+
+</body>
+</html>
