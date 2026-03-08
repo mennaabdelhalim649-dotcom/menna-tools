@@ -1,334 +1,522 @@
-
- <!DOCTYPE html>
-<html>
-<h1>Menna Tools</h1>
-<p>Free Video to Audio Converter</p>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 <head>
-
-<title>Menna Tools | Free Video to Audio Converter</title>
- <meta name="description" content="Menna Tools - Free online tools created by Eng Menna. Convert video to audio easily.">
-<meta name="google-site-verification" content="bPH2wXjQ4JVopGWBNj07UxAC4M99GH1oq_BZcESHHs4" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menna Tools</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
-.footer{
-margin-top:40px;
-padding:20px;
-background:#222;
-color:white;
-font-size:16px;
-animation:fadeIn 2s ease-in-out;
-}
+:root{--c:#00f5ff;--p:#ff00ff;--g:#00ff88;--y:#ffe500;--bg:#04040f;--card:rgba(8,8,28,0.9);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Cairo',sans-serif;background:var(--bg);color:#ddeeff;min-height:100vh;overflow-x:hidden;cursor:none;}
+#cur{width:10px;height:10px;border-radius:50%;background:var(--c);position:fixed;pointer-events:none;z-index:9999;box-shadow:0 0 12px var(--c),0 0 24px var(--c);transition:transform .1s;}
+#cur2{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--p);position:fixed;pointer-events:none;z-index:9998;transition:all .18s ease;box-shadow:0 0 8px var(--p);}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(0,245,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,255,.025) 1px,transparent 1px);background-size:48px 48px;animation:gridSlide 25s linear infinite;z-index:0;}
+@keyframes gridSlide{to{background-position:0 48px;}}
+.orbs{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.1;animation:orbF 18s ease-in-out infinite;}
+.o1{width:500px;height:500px;background:var(--c);top:-150px;left:-150px;}
+.o2{width:350px;height:350px;background:var(--p);top:40%;right:-100px;animation-delay:-6s;}
+.o3{width:400px;height:400px;background:var(--g);bottom:-120px;left:35%;animation-delay:-12s;}
+@keyframes orbF{0%,100%{transform:translate(0,0)}33%{transform:translate(40px,-40px)}66%{transform:translate(-25px,25px)}}
+header{position:relative;z-index:10;text-align:center;padding:52px 20px 28px;}
+.brand{font-family:'Orbitron',monospace;font-size:clamp(2.8rem,7vw,5.5rem);font-weight:900;background:linear-gradient(90deg,var(--c),var(--p),var(--y),var(--c));background-size:300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shine 4s linear infinite;filter:drop-shadow(0 0 22px rgba(0,245,255,.45));}
+@keyframes shine{to{background-position:300%;}}
+.brand-sub{font-family:'Orbitron',monospace;font-size:.75rem;letter-spacing:5px;color:rgba(0,245,255,.55);margin-top:10px;animation:blinkSub 2.5s ease-in-out infinite;}
+@keyframes blinkSub{0%,100%{opacity:1;}50%{opacity:.35;}}
+.hline{height:1px;margin-top:26px;background:linear-gradient(90deg,transparent,var(--c),var(--p),var(--c),transparent);animation:lGlow 3s ease-in-out infinite;}
+@keyframes lGlow{0%,100%{opacity:.4;}50%{opacity:1;}}
+.tabs{position:relative;z-index:10;display:flex;justify-content:center;flex-wrap:wrap;gap:10px;padding:22px 20px;}
+.tab{font-family:'Cairo',sans-serif;font-weight:700;font-size:.88rem;padding:9px 22px;border-radius:30px;border:1px solid rgba(0,245,255,.25);background:rgba(0,245,255,.04);color:rgba(0,245,255,.6);cursor:pointer;transition:all .3s;letter-spacing:1px;}
+.tab:hover,.tab.on{background:rgba(0,245,255,.12);color:var(--c);border-color:var(--c);box-shadow:0 0 18px rgba(0,245,255,.25);}
+.sec{display:none;position:relative;z-index:10;padding:10px 28px 50px;}
+.sec.on{display:block;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:26px;max-width:1160px;margin:0 auto;}
+.card{background:var(--card);border:1px solid rgba(0,245,255,.18);border-radius:18px;padding:28px;position:relative;overflow:hidden;transition:all .4s;backdrop-filter:blur(18px);animation:cardIn .5s ease both;}
+@keyframes cardIn{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+.card::before{content:'';position:absolute;top:0;left:-120%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(0,245,255,.05),transparent);transition:left .7s;}
+.card:hover::before{left:160%;}
+.card:hover{border-color:var(--c);transform:translateY(-6px);box-shadow:0 0 35px rgba(0,245,255,.18),0 0 70px rgba(0,245,255,.07);}
+.cicon{font-size:2.4rem;display:block;margin-bottom:12px;animation:iconP 3s ease-in-out infinite;}
+@keyframes iconP{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
+.ctitle{font-family:'Orbitron',monospace;font-size:.95rem;font-weight:700;color:var(--c);margin-bottom:5px;text-shadow:0 0 10px rgba(0,245,255,.4);}
+.cdesc{font-size:.8rem;color:rgba(180,210,255,.45);margin-bottom:18px;line-height:1.6;}
+.upzone{border:2px dashed rgba(0,245,255,.22);border-radius:10px;padding:18px 12px;text-align:center;margin-bottom:13px;background:rgba(0,245,255,.02);transition:all .3s;cursor:pointer;}
+.upzone:hover,.upzone.drag{border-color:var(--c);background:rgba(0,245,255,.06);box-shadow:0 0 18px rgba(0,245,255,.1);}
+.upzone input[type=file]{display:none;}
+.uplabel{font-size:.82rem;color:rgba(0,245,255,.55);cursor:pointer;display:block;}
+.upname{display:block;margin-top:5px;font-size:.75rem;color:var(--g);word-break:break-all;}
+.img-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.img-item{display:flex;align-items:center;gap:10px;background:rgba(0,245,255,.04);border:1px solid rgba(0,245,255,.15);border-radius:8px;padding:8px 10px;cursor:grab;transition:background .2s;user-select:none;}
+.img-item:active{cursor:grabbing;}
+.img-item.dragging{opacity:.4;background:rgba(0,245,255,.12);}
+.img-item.drag-over-item{border-color:var(--c);background:rgba(0,245,255,.1);}
+.img-thumb{width:42px;height:42px;object-fit:cover;border-radius:5px;border:1px solid rgba(0,245,255,.2);}
+.img-fname{flex:1;font-size:.78rem;color:#cde;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.img-del{background:none;border:none;color:rgba(255,80,80,.7);font-size:1rem;cursor:pointer;padding:2px 6px;border-radius:4px;transition:color .2s;}
+.img-del:hover{color:#ff5555;}
+.drag-handle{font-size:1.1rem;color:rgba(0,245,255,.35);cursor:grab;}
+textarea{width:100%;min-height:80px;background:rgba(0,245,255,.03);border:1px solid rgba(0,245,255,.18);border-radius:8px;padding:10px;color:#ddeeff;font-family:'Cairo',sans-serif;font-size:.85rem;resize:vertical;outline:none;transition:border-color .3s;margin-bottom:13px;}
+textarea:focus{border-color:var(--c);box-shadow:0 0 10px rgba(0,245,255,.12);}
+input[type=text],input[type=number]{width:100%;background:rgba(0,245,255,.03);border:1px solid rgba(0,245,255,.18);border-radius:8px;padding:10px;color:#ddeeff;font-family:'Cairo',sans-serif;font-size:.88rem;outline:none;transition:border-color .3s;margin-bottom:10px;}
+input[type=text]:focus,input[type=number]:focus{border-color:var(--c);box-shadow:0 0 10px rgba(0,245,255,.12);}
+input[type=range]{width:100%;accent-color:var(--c);margin:6px 0;}
+input[type=checkbox]{accent-color:var(--c);width:14px;height:14px;cursor:pointer;}
+select{width:100%;background:rgba(0,245,255,.05);border:1px solid rgba(0,245,255,.22);border-radius:8px;padding:10px;color:#ddeeff;font-family:'Cairo',sans-serif;font-size:.85rem;outline:none;cursor:pointer;transition:border-color .3s;margin-bottom:10px;}
+select:focus{border-color:var(--c);}
+select option{background:#0a0a1e;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 22px;border-radius:9px;border:none;width:100%;font-family:'Cairo',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .3s;letter-spacing:.8px;position:relative;overflow:hidden;}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none!important;}
+.bc{background:rgba(0,245,255,.1);color:var(--c);border:1px solid rgba(0,245,255,.45);box-shadow:0 0 12px rgba(0,245,255,.08);}
+.bc:hover:not(:disabled){background:rgba(0,245,255,.22);box-shadow:0 0 28px rgba(0,245,255,.28);transform:translateY(-2px);}
+.bp{background:rgba(255,0,255,.1);color:var(--p);border:1px solid rgba(255,0,255,.45);}
+.bp:hover:not(:disabled){background:rgba(255,0,255,.2);box-shadow:0 0 28px rgba(255,0,255,.25);transform:translateY(-2px);}
+.bg{background:rgba(0,255,136,.1);color:var(--g);border:1px solid rgba(0,255,136,.45);}
+.bg:hover:not(:disabled){background:rgba(0,255,136,.2);box-shadow:0 0 28px rgba(0,255,136,.25);transform:translateY(-2px);}
+.by{background:rgba(255,229,0,.1);color:var(--y);border:1px solid rgba(255,229,0,.45);}
+.by:hover:not(:disabled){background:rgba(255,229,0,.2);box-shadow:0 0 28px rgba(255,229,0,.22);transform:translateY(-2px);}
+.prog{display:none;margin:11px 0;}
+.pbar{height:4px;background:rgba(0,245,255,.1);border-radius:4px;overflow:hidden;}
+.pfill{height:100%;width:0%;background:linear-gradient(90deg,var(--c),var(--p));border-radius:4px;box-shadow:0 0 10px var(--c);transition:width .3s;}
+.ptxt{font-size:.75rem;color:rgba(0,245,255,.55);text-align:center;margin-top:5px;}
+.res{display:none;margin-top:13px;padding:13px;border-radius:8px;border:1px solid rgba(0,255,136,.3);background:rgba(0,255,136,.05);text-align:center;}
+.res a{color:var(--g);text-decoration:none;font-weight:700;font-size:.88rem;display:inline-flex;align-items:center;gap:6px;}
+.res a:hover{text-shadow:0 0 10px var(--g);}
+#qr-out{display:none;text-align:center;margin-top:14px;}
+#qr-cv{border-radius:10px;border:2px solid var(--c);box-shadow:0 0 22px rgba(0,245,255,.3);background:white;padding:10px;max-width:180px;}
+.pw-disp{background:rgba(0,0,0,.4);border:1px solid rgba(0,245,255,.25);border-radius:8px;padding:14px;margin:12px 0;font-family:'Orbitron',monospace;font-size:.8rem;color:var(--g);word-break:break-all;min-height:48px;text-align:center;box-shadow:inset 0 0 20px rgba(0,255,136,.04);}
+.pw-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0;}
+.pw-opt{display:flex;align-items:center;gap:6px;font-size:.78rem;color:rgba(180,210,255,.65);cursor:pointer;}
+.pwbar{height:4px;border-radius:4px;margin:4px 0;transition:all .4s;}
+.toast{position:fixed;bottom:28px;right:28px;z-index:9999;padding:13px 20px;border-radius:10px;font-size:.83rem;font-weight:700;border:1px solid;backdrop-filter:blur(20px);transform:translateX(160%);transition:transform .4s ease;max-width:270px;}
+.toast.show{transform:translateX(0);}
+.toast.ok{background:rgba(0,255,136,.1);border-color:rgba(0,255,136,.4);color:var(--g);}
+.toast.err{background:rgba(255,50,50,.12);border-color:rgba(255,50,50,.45);color:#ff5555;}
 
-.footer b{
-color:#4da6ff;
-animation:pulse 2s infinite;
-}
+/* ── FOOTER ── */
+footer{position:relative;z-index:10;text-align:center;padding:36px 20px 32px;}
+footer::before{content:'';display:block;height:1px;margin-bottom:32px;background:linear-gradient(90deg,transparent,var(--c),var(--p),var(--c),transparent);animation:lGlow 3s ease-in-out infinite;}
 
-@keyframes fadeIn{
-from{
-opacity:0;
-transform:translateY(20px);
+/* SAWA SAWA neon */
+.sawa-wrap{display:inline-block;position:relative;margin-bottom:12px;}
+.sawa{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(1.8rem,5vw,3rem);
+  font-weight:900;
+  letter-spacing:10px;
+  text-transform:uppercase;
+  position:relative;
+  display:inline-block;
+  color:transparent;
 }
-to{
-opacity:1;
-transform:translateY(0);
+.sawa::before{
+  content:'M.A';
+  position:absolute;inset:0;
+  background:linear-gradient(90deg,var(--c),var(--p),var(--y),var(--g),var(--c));
+  background-size:400%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:shine 3s linear infinite;
 }
+/* glow layers */
+.sawa-g1{
+  position:absolute;inset:0;
+  font-family:'Orbitron',monospace;font-size:inherit;font-weight:inherit;letter-spacing:inherit;
+  background:linear-gradient(90deg,var(--c),var(--p),var(--y),var(--g),var(--c));
+  background-size:400%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:shine 3s linear infinite;
+  filter:blur(12px);opacity:.75;
+  pointer-events:none;
 }
+.sawa-g2{
+  position:absolute;inset:0;
+  font-family:'Orbitron',monospace;font-size:inherit;font-weight:inherit;letter-spacing:inherit;
+  background:linear-gradient(90deg,var(--p),var(--c),var(--g),var(--p));
+  background-size:400%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:shine 3s linear infinite reverse;
+  filter:blur(28px);opacity:.5;
+  pointer-events:none;
+}
+.sawa-txt{
+  position:relative;z-index:2;
+  background:linear-gradient(90deg,var(--c),var(--p),var(--y),var(--g),var(--c));
+  background-size:400%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:shine 3s linear infinite;
+}
+.made{font-size:.72rem;color:rgba(200,220,255,.22);margin-top:8px;letter-spacing:2px;}
 
-@keyframes pulse{
-0%{
-transform:scale(1);
-}
-50%{
-transform:scale(1.1);
-}
-100%{
-transform:scale(1);
-}
-}
-footer{
-margin-top:40px;
-padding:15px;
-background:#222;
-color:white;
-font-size:14px;
-}
-
-body{
-font-family:Arial;
-background:#f4f6fb;
-margin:0;
-padding:0;
-}
-
-h1{
-background:#2563eb;
-color:white;
-padding:20px;
-margin:0;
-}
-
-.container{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:25px;
-padding:40px;
-}
-
-.box{
-background:white;
-width:260px;
-padding:25px;
-border-radius:12px;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
-transition:0.3s;
-}
-
-.box:hover{
-transform:translateY(-5px);
-}
-
-button{
-padding:10px 20px;
-background:#2563eb;
-color:white;
-border:none;
-border-radius:6px;
-cursor:pointer;
-margin-top:10px;
-}
-
-button:hover{
-background:#1d4ed8;
-}
-
-textarea{
-width:100%;
-height:80px;
-margin-top:10px;
-}
-
-input{
-margin-top:10px;
-}
-
+.pt{position:fixed;width:2px;height:2px;border-radius:50%;pointer-events:none;z-index:1;opacity:0;animation:ptF linear infinite;}
+@keyframes ptF{0%{transform:translateY(100vh);opacity:0;}10%{opacity:.9;}90%{opacity:.3;}100%{transform:translateY(-10px);opacity:0;}}
+@media(max-width:580px){.grid{grid-template-columns:1fr;padding:0 4px;}.tabs{gap:6px;}.tab{padding:7px 13px;font-size:.8rem;}}
 </style>
 </head>
-<footer>
-Created with ❤️ by <b>Eng Menna</b>
-</footer>
 <body>
 
-<h1>My Tools Website</h1>
+<div id="cur"></div><div id="cur2"></div>
+<div class="grid-bg"></div>
+<div class="orbs"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div></div>
 
-<div class="container">
+<header>
+  <div class="brand">MENNA TOOLS</div>
+  <div class="brand-sub">⚡ FREE ONLINE TOOLS ⚡</div>
+  <div class="hline"></div>
+</header>
 
-<div class="box">
-<h3>Video to MP3</h3>
-<input type="file" id="videoFile" accept="video/*"><br>
-<button onclick="videoToMP3()">Convert</button><br><br>
-<a id="downloadLink"></a>
+<div class="tabs">
+  <button class="tab on" onclick="showTab('media',this)">🎵 فيديو → صوت</button>
+  <button class="tab" onclick="showTab('img',this)">🖼️ صور → PDF</button>
+  <button class="tab" onclick="showTab('conv',this)">🔄 تحويل ملفات</button>
+  <button class="tab" onclick="showTab('tools',this)">⚡ أدوات</button>
 </div>
 
-<div class="box">
-<h3>Image to PDF</h3>
-<input type="file" id="imageFile" accept="image/*"><br>
-<button onclick="imageToPDF()">Convert</button>
+<!-- ══ MEDIA ══ -->
+<div class="sec on" id="sec-media">
+  <div class="grid" style="max-width:520px;">
+    <div class="card">
+      <span class="cicon" style="color:var(--c)">🎬</span>
+      <div class="ctitle">VIDEO → AUDIO</div>
+      <div class="cdesc">حوّل أي فيديو لملف صوتي WAV بضغطة زر واحدة</div>
+      <div class="upzone" id="v2a-zone" ondrop="dropSingle(event,'vFile','v2a-nm')" ondragover="dov(event,'v2a-zone')" ondragleave="dol('v2a-zone')">
+        <label class="uplabel" for="vFile">
+          📂 اسحب الفيديو هنا أو اضغط للاختيار
+          <input type="file" id="vFile" accept="video/*" onchange="setName(this,'v2a-nm')">
+          <span class="upname" id="v2a-nm"></span>
+        </label>
+      </div>
+      <div class="prog" id="v2a-p"><div class="pbar"><div class="pfill" id="v2a-f"></div></div><div class="ptxt" id="v2a-t">جاري المعالجة...</div></div>
+      <button class="btn bc" onclick="videoToAudio()">🎵 تحويل الآن</button>
+      <div class="res" id="v2a-r"><a id="v2a-a" href="#">⬇️ تحميل الصوت</a></div>
+    </div>
+  </div>
 </div>
 
-<div class="box">
-<h3>Word to PDF</h3>
-<textarea id="wordtext" placeholder="Paste word text"></textarea><br>
-<button onclick="wordToPDF()">Convert</button>
+<!-- ══ IMAGES → PDF ══ -->
+<div class="sec" id="sec-img">
+  <div class="grid" style="max-width:540px;">
+    <div class="card">
+      <span class="cicon" style="color:var(--p)">🖼️</span>
+      <div class="ctitle">صور → PDF</div>
+      <div class="cdesc">أضف صور متعددة، رتّبها بالسحب، ثم صدّرها كـ PDF واحد</div>
+      <div class="upzone" id="ip-zone" ondrop="dropImgs(event)" ondragover="dov(event,'ip-zone')" ondragleave="dol('ip-zone')">
+        <label class="uplabel" for="ipFiles">
+          📂 اضغط لإضافة صور (يمكن الإضافة أكثر من مرة)
+          <input type="file" id="ipFiles" accept="image/*" multiple onchange="addImages(this)">
+        </label>
+      </div>
+      <ul class="img-list" id="img-list"></ul>
+      <p id="ip-empty" style="text-align:center;font-size:.78rem;color:rgba(0,245,255,.28);padding:6px 0;display:none;">لا توجد صور بعد</p>
+      <div style="display:flex;gap:8px;margin-bottom:13px;">
+        <button class="btn bp" onclick="clearImages()" style="flex:1;padding:9px 6px;font-size:.82rem;">🗑️ مسح الكل</button>
+        <button class="btn bc" onclick="imagesToPDF()" style="flex:2;">📄 تصدير PDF</button>
+      </div>
+      <div class="prog" id="ip-p"><div class="pbar"><div class="pfill" id="ip-f"></div></div><div class="ptxt" id="ip-t">جاري الإنشاء...</div></div>
+      <div class="res" id="ip-r"><a id="ip-a" href="#">⬇️ تحميل PDF</a></div>
+    </div>
+  </div>
 </div>
 
-<div class="box">
-<h3>PDF to Word</h3>
-<textarea id="pdftext" placeholder="Paste PDF text"></textarea><br>
-<button onclick="pdfToWord()">Download Word</button>
+<!-- ══ FILE CONVERT ══ -->
+<div class="sec" id="sec-conv">
+  <div class="grid" style="max-width:540px;">
+    <div class="card">
+      <span class="cicon" style="color:var(--g)">🔄</span>
+      <div class="ctitle">تحويل الملفات</div>
+      <div class="cdesc">ارفع ملفاً واختر صيغة الإخراج — التحويل يتم محلياً في المتصفح</div>
+      <div class="upzone" id="fc-zone" ondrop="dropSingle(event,'fcFile','fc-nm')" ondragover="dov(event,'fc-zone')" ondragleave="dol('fc-zone')">
+        <label class="uplabel" for="fcFile">
+          📂 اسحب الملف هنا أو اضغط للاختيار
+          <input type="file" id="fcFile" accept=".pdf,.doc,.docx,.txt" onchange="setName(this,'fc-nm');detectType(this)">
+          <span class="upname" id="fc-nm"></span>
+        </label>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+        <div>
+          <label style="font-size:.75rem;color:rgba(200,220,255,.4);display:block;margin-bottom:4px;">من:</label>
+          <select id="fc-from">
+            <option value="pdf">PDF</option>
+            <option value="word">Word (.docx)</option>
+            <option value="txt">نص (.txt)</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:.75rem;color:rgba(200,220,255,.4);display:block;margin-bottom:4px;">إلى:</label>
+          <select id="fc-to">
+            <option value="word">Word (.doc)</option>
+            <option value="pdf">PDF</option>
+            <option value="txt">نص (.txt)</option>
+          </select>
+        </div>
+      </div>
+      <div class="prog" id="fc-p"><div class="pbar"><div class="pfill" id="fc-f"></div></div><div class="ptxt" id="fc-t">جاري التحويل...</div></div>
+      <button class="btn bg" onclick="convertFile()">🔄 تحويل الآن</button>
+      <div class="res" id="fc-r"><a id="fc-a" href="#">⬇️ تحميل الملف المحوَّل</a></div>
+      <p style="margin-top:10px;font-size:.7rem;color:rgba(180,210,255,.22);text-align:center;">ملفاتك خاصة — لا يتم رفعها لأي سيرفر</p>
+    </div>
+  </div>
 </div>
 
+<!-- ══ TOOLS ══ -->
+<div class="sec" id="sec-tools">
+  <div class="grid">
+
+    <!-- QR -->
+    <div class="card" style="animation-delay:.05s">
+      <span class="cicon" style="color:var(--c)">🔷</span>
+      <div class="ctitle">QR CODE GENERATOR</div>
+      <div class="cdesc">ولّد QR Code لأي نص أو رابط بألوان مخصصة</div>
+      <input type="text" id="qr-in" placeholder="اكتب الرابط أو النص...">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+        <div><label style="font-size:.72rem;color:rgba(200,220,255,.4);display:block;margin-bottom:4px;">لون QR</label><input type="color" id="qr-col" value="#00f5ff" style="width:100%;height:36px;border:none;border-radius:6px;cursor:pointer;background:transparent;padding:0;"></div>
+        <div><label style="font-size:.72rem;color:rgba(200,220,255,.4);display:block;margin-bottom:4px;">الخلفية</label><input type="color" id="qr-bg" value="#050510" style="width:100%;height:36px;border:none;border-radius:6px;cursor:pointer;background:transparent;padding:0;"></div>
+      </div>
+      <button class="btn bc" onclick="genQR()">🔷 إنشاء QR</button>
+      <div id="qr-out">
+        <canvas id="qr-cv"></canvas><br>
+        <button class="btn bg" onclick="dlQR()" style="margin-top:10px;">⬇️ تحميل</button>
+      </div>
+    </div>
+
+    <!-- PASSWORD -->
+    <div class="card" style="animation-delay:.1s">
+      <span class="cicon" style="color:var(--g)">🔐</span>
+      <div class="ctitle">PASSWORD GENERATOR</div>
+      <div class="cdesc">ولّد كلمات سر قوية باستخدام crypto آمن بالكامل</div>
+      <div style="margin-bottom:10px;">
+        <label style="font-size:.78rem;color:rgba(200,220,255,.45);">الطول: <span id="pw-lv" style="color:var(--c)">16</span></label>
+        <input type="range" id="pw-len" min="6" max="64" value="16" oninput="document.getElementById('pw-lv').textContent=this.value;genPW()">
+      </div>
+      <div class="pw-opts">
+        <label class="pw-opt"><input type="checkbox" id="pw-U" checked onchange="genPW()"> A–Z كبيرة</label>
+        <label class="pw-opt"><input type="checkbox" id="pw-l" checked onchange="genPW()"> a–z صغيرة</label>
+        <label class="pw-opt"><input type="checkbox" id="pw-n" checked onchange="genPW()"> أرقام 0–9</label>
+        <label class="pw-opt"><input type="checkbox" id="pw-s" checked onchange="genPW()"> رموز !@#$</label>
+      </div>
+      <div class="pw-disp" id="pw-d">اضغط إنشاء...</div>
+      <div class="pwbar" id="pw-str"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;">
+        <button class="btn bg" onclick="genPW()">🔄 إنشاء</button>
+        <button class="btn bc" onclick="cpPW()">📋 نسخ</button>
+      </div>
+    </div>
+
+  </div>
 </div>
+
+<div class="toast" id="toast"></div>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="sawa-wrap">
+    <div class="sawa">
+      <span class="sawa-g1" aria-hidden="true">M.A</span>
+      <span class="sawa-g2" aria-hidden="true">M.A</span>
+      <span class="sawa-txt">M.A</span>
+    </div>
+  </div>
+  <div class="made">CREATED WITH ❤️ BY ENG MENNA &nbsp;·&nbsp; © 2025 MENNA TOOLS</div>
+</footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
 <script>
+// CURSOR
+const cur=document.getElementById('cur'),cur2=document.getElementById('cur2');
+let mx=0,my=0,tx=0,ty=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=(mx-5)+'px';cur.style.top=(my-5)+'px';});
+setInterval(()=>{tx+=(mx-tx)*.16;ty+=(my-ty)*.16;cur2.style.left=(tx-14)+'px';cur2.style.top=(ty-14)+'px';},16);
 
-const { jsPDF } = window.jspdf;
+// PARTICLES
+function mkPt(){const p=document.createElement('div');p.className='pt';const c=['#00f5ff','#ff00ff','#00ff88','#ffe500'];p.style.cssText=`background:${c[Math.random()*4|0]};left:${Math.random()*100}vw;animation-duration:${6+Math.random()*9}s;animation-delay:${Math.random()*4}s;width:${1+Math.random()*2.5}px;height:${1+Math.random()*2.5}px`;document.body.appendChild(p);setTimeout(()=>p.remove(),14000);}
+setInterval(mkPt,700);
 
-function imageToPDF(){
+// TABS
+function showTab(n,el){document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));document.getElementById('sec-'+n).classList.add('on');el.classList.add('on');}
 
-const file=document.getElementById("imageFile").files[0];
+// TOAST
+function toast(m,t='ok'){const el=document.getElementById('toast');el.textContent=m;el.className='toast '+t;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),3000);}
 
-const reader=new FileReader();
+// HELPERS
+function setName(i,id){document.getElementById(id).textContent=i.files[0]?.name||'';}
+function dov(e,id){e.preventDefault();document.getElementById(id).classList.add('drag');}
+function dol(id){document.getElementById(id).classList.remove('drag');}
+function dropSingle(e,inputId,nameId){e.preventDefault();dol(e.currentTarget.id);if(e.dataTransfer.files[0]){const inp=document.getElementById(inputId);const dt=new DataTransfer();dt.items.add(e.dataTransfer.files[0]);inp.files=dt.files;document.getElementById(nameId).textContent=e.dataTransfer.files[0].name;inp.dispatchEvent(new Event('change'));}}
+function setProg(id,v){document.getElementById(id).style.width=v+'%';}
+function showProg(id){document.getElementById(id).style.display='block';}
+function showRes(id){document.getElementById(id).style.display='block';}
 
-reader.onload=function(e){
-
-const pdf=new jsPDF();
-
-pdf.addImage(e.target.result,'JPEG',10,10,180,160);
-
-pdf.save("image.pdf");
-
+// VIDEO → AUDIO
+async function videoToAudio(){
+  const f=document.getElementById('vFile').files[0];
+  if(!f)return toast('❌ اختر فيديو أولاً','err');
+  if(f.size>400*1024*1024)return toast('❌ الحجم أكبر من 400MB','err');
+  showProg('v2a-p');document.getElementById('v2a-r').style.display='none';
+  setProg('v2a-f',15);document.getElementById('v2a-t').textContent='قراءة الملف...';
+  try{
+    const ac=new(window.AudioContext||window.webkitAudioContext)();
+    setProg('v2a-f',35);document.getElementById('v2a-t').textContent='فك الترميز...';
+    const ab=await f.arrayBuffer();
+    setProg('v2a-f',58);document.getElementById('v2a-t').textContent='تصيير الصوت...';
+    const buf=await ac.decodeAudioData(ab);
+    const off=new OfflineAudioContext(buf.numberOfChannels,buf.length,buf.sampleRate);
+    const src=off.createBufferSource();src.buffer=buf;src.connect(off.destination);src.start();
+    setProg('v2a-f',75);
+    const ren=await off.startRendering();
+    setProg('v2a-f',90);document.getElementById('v2a-t').textContent='إنشاء الملف...';
+    const wav=bufToWav(ren);
+    const url=URL.createObjectURL(wav);
+    const a=document.getElementById('v2a-a');a.href=url;a.download=f.name.replace(/\.[^.]+$/,'')+'.wav';
+    setProg('v2a-f',100);document.getElementById('v2a-t').textContent='تم ✅';
+    showRes('v2a-r');toast('✅ تم التحويل بنجاح!');
+  }catch(e){document.getElementById('v2a-p').style.display='none';toast('❌ خطأ: '+e.message,'err');}
+}
+function bufToWav(ab){
+  const nc=ab.numberOfChannels,sr=ab.sampleRate,len=ab.length;
+  const buf=new ArrayBuffer(44+len*nc*2),v=new DataView(buf);let p=0;
+  const u16=d=>{v.setUint16(p,d,true);p+=2;};
+  const u32=d=>{v.setUint32(p,d,true);p+=4;};
+  u32(0x46464952);u32(36+len*nc*2);u32(0x45564157);
+  u32(0x20746d66);u32(16);u16(1);u16(nc);u32(sr);u32(sr*nc*2);u16(nc*2);u16(16);
+  u32(0x61746164);u32(len*nc*2);
+  const ch=[];for(let i=0;i<nc;i++)ch.push(ab.getChannelData(i));
+  for(let i=0;i<len;i++)for(let c=0;c<nc;c++){let s=Math.max(-1,Math.min(1,ch[c][i]));v.setInt16(p,(s<0?s*32768:s*32767)|0,true);p+=2;}
+  return new Blob([buf],{type:'audio/wav'});
 }
 
-reader.readAsDataURL(file);
-
+// IMAGES → PDF
+let imgFiles=[];
+function addImages(inp){Array.from(inp.files).forEach(f=>imgFiles.push(f));inp.value='';renderList();}
+function dropImgs(e){e.preventDefault();dol('ip-zone');Array.from(e.dataTransfer.files).filter(f=>f.type.startsWith('image/')).forEach(f=>imgFiles.push(f));renderList();}
+let dragSrcIdx=null;
+function renderList(){
+  const ul=document.getElementById('img-list');
+  const em=document.getElementById('ip-empty');
+  ul.innerHTML='';
+  if(!imgFiles.length){em.style.display='block';return;}
+  em.style.display='none';
+  imgFiles.forEach((f,i)=>{
+    const li=document.createElement('li');li.className='img-item';li.draggable=true;li.dataset.i=i;
+    const handle=document.createElement('span');handle.className='drag-handle';handle.textContent='⠿';
+    const thumb=document.createElement('img');thumb.className='img-thumb';thumb.src=URL.createObjectURL(f);
+    const name=document.createElement('span');name.className='img-fname';name.textContent=f.name;
+    const del=document.createElement('button');del.className='img-del';del.textContent='✕';
+    del.onclick=()=>{imgFiles.splice(i,1);renderList();};
+    li.append(handle,thumb,name,del);
+    li.addEventListener('dragstart',e=>{dragSrcIdx=i;e.dataTransfer.effectAllowed='move';li.classList.add('dragging');});
+    li.addEventListener('dragend',()=>{li.classList.remove('dragging');document.querySelectorAll('.img-item').forEach(el=>el.classList.remove('drag-over-item'));});
+    li.addEventListener('dragover',e=>{e.preventDefault();li.classList.add('drag-over-item');});
+    li.addEventListener('dragleave',()=>li.classList.remove('drag-over-item'));
+    li.addEventListener('drop',e=>{
+      e.preventDefault();li.classList.remove('drag-over-item');
+      const to=parseInt(li.dataset.i);
+      if(dragSrcIdx===null||dragSrcIdx===to)return;
+      const moved=imgFiles.splice(dragSrcIdx,1)[0];
+      imgFiles.splice(to,0,moved);
+      dragSrcIdx=null;renderList();
+    });
+    ul.appendChild(li);
+  });
+}
+function clearImages(){imgFiles=[];renderList();}
+async function imagesToPDF(){
+  if(!imgFiles.length)return toast('❌ أضف صورة واحدة على الأقل','err');
+  showProg('ip-p');document.getElementById('ip-r').style.display='none';
+  const {jsPDF}=window.jspdf;const pdf=new jsPDF();
+  for(let i=0;i<imgFiles.length;i++){
+    setProg('ip-f',Math.round((i/imgFiles.length)*90));
+    document.getElementById('ip-t').textContent=`صورة ${i+1} من ${imgFiles.length}...`;
+    await new Promise(res=>{
+      const reader=new FileReader();
+      reader.onload=e=>{
+        const img=new Image();
+        img.onload=()=>{
+          if(i>0)pdf.addPage();
+          const pw=pdf.internal.pageSize.getWidth()-20,ph=pdf.internal.pageSize.getHeight()-20;
+          const r=Math.min(pw/img.width,ph/img.height),w=img.width*r,h=img.height*r;
+          pdf.addImage(e.target.result,'JPEG',(pdf.internal.pageSize.getWidth()-w)/2,(pdf.internal.pageSize.getHeight()-h)/2,w,h);
+          res();
+        };img.src=e.target.result;
+      };reader.readAsDataURL(imgFiles[i]);
+    });
+  }
+  setProg('ip-f',100);document.getElementById('ip-t').textContent='تم ✅';
+  const url=URL.createObjectURL(pdf.output('blob'));
+  const a=document.getElementById('ip-a');a.href=url;a.download='images.pdf';
+  showRes('ip-r');toast('✅ تم إنشاء PDF!');
 }
 
-function wordToPDF(){
-
-const text=document.getElementById("wordtext").value;
-
-const pdf=new jsPDF();
-
-pdf.text(text,10,10);
-
-pdf.save("word.pdf");
-
+// FILE CONVERTER
+function detectType(inp){
+  const f=inp.files[0];if(!f)return;
+  const ext=f.name.split('.').pop().toLowerCase();
+  const fr=document.getElementById('fc-from'),to=document.getElementById('fc-to');
+  if(ext==='pdf'){fr.value='pdf';to.value='word';}
+  else if(['docx','doc'].includes(ext)){fr.value='word';to.value='pdf';}
+  else if(ext==='txt'){fr.value='txt';to.value='pdf';}
+}
+async function convertFile(){
+  const f=document.getElementById('fcFile').files[0];
+  if(!f)return toast('❌ اختر ملفاً أولاً','err');
+  const from=document.getElementById('fc-from').value;
+  const to=document.getElementById('fc-to').value;
+  if(from===to)return toast('❌ الصيغتان متطابقتان!','err');
+  showProg('fc-p');document.getElementById('fc-r').style.display='none';
+  setProg('fc-f',20);document.getElementById('fc-t').textContent='قراءة الملف...';
+  try{
+    const text=await new Promise((res,rej)=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.onerror=rej;r.readAsText(f);});
+    setProg('fc-f',65);document.getElementById('fc-t').textContent='جاري التحويل...';
+    let blob,ext;
+    if(to==='pdf'){
+      const {jsPDF}=window.jspdf;const pdf=new jsPDF();
+      const lines=pdf.splitTextToSize(text||'(ملف فارغ)',180);
+      let y=15;lines.forEach(line=>{if(y>272){pdf.addPage();y=15;}pdf.text(line,10,y);y+=7;});
+      blob=pdf.output('blob');ext='pdf';
+    }else if(to==='word'){blob=new Blob([text],{type:'application/msword'});ext='doc';}
+    else{blob=new Blob([text],{type:'text/plain'});ext='txt';}
+    setProg('fc-f',100);document.getElementById('fc-t').textContent='تم ✅';
+    const url=URL.createObjectURL(blob);
+    const a=document.getElementById('fc-a');a.href=url;a.download='converted.'+ext;
+    showRes('fc-r');toast('✅ تم التحويل!');
+  }catch(e){document.getElementById('fc-p').style.display='none';toast('❌ خطأ: '+e.message,'err');}
 }
 
-function pdfToWord(){
-
-const text=document.getElementById("pdftext").value;
-
-const blob=new Blob([text],{type:"application/msword"});
-
-const link=document.createElement("a");
-
-link.href=URL.createObjectURL(blob);
-
-link.download="file.doc";
-
-link.click();
-
+// QR
+function genQR(){
+  const txt=document.getElementById('qr-in').value.trim();
+  if(!txt)return toast('❌ أدخل نصاً أو رابطاً','err');
+  const col=document.getElementById('qr-col').value;
+  const bg=document.getElementById('qr-bg').value;
+  const cv=document.getElementById('qr-cv');cv.width=cv.height=200;
+  const img=new Image();img.crossOrigin='anonymous';
+  img.onload=()=>{cv.getContext('2d').drawImage(img,0,0,200,200);document.getElementById('qr-out').style.display='block';toast('✅ تم إنشاء QR!');};
+  img.onerror=()=>{const ctx=cv.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,200,200);ctx.fillStyle='#000';ctx.font='12px monospace';ctx.textAlign='center';ctx.fillText(txt.slice(0,25),100,100);document.getElementById('qr-out').style.display='block';};
+  img.src=`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(txt)}&color=${col.slice(1)}&bgcolor=${bg.slice(1)}`;
 }
+function dlQR(){const a=document.createElement('a');a.href=document.getElementById('qr-cv').toDataURL();a.download='qr.png';a.click();toast('✅ تم التحميل!');}
 
-async function videoToMP3(){
-
-const file=document.getElementById("videoFile").files[0];
-
-if(!file){
-
-alert("Choose a video");
-
-return;
-
+// PASSWORD
+function genPW(){
+  const len=+document.getElementById('pw-len').value;
+  let chars='';
+  if(document.getElementById('pw-U').checked)chars+='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  if(document.getElementById('pw-l').checked)chars+='abcdefghijklmnopqrstuvwxyz';
+  if(document.getElementById('pw-n').checked)chars+='0123456789';
+  if(document.getElementById('pw-s').checked)chars+='!@#$%^&*()_+-=[]{}|;:,.<>?';
+  if(!chars)return toast('❌ اختر نوعاً واحداً','err');
+  const arr=new Uint32Array(len);crypto.getRandomValues(arr);
+  const pw=Array.from(arr).map(x=>chars[x%chars.length]).join('');
+  document.getElementById('pw-d').textContent=pw;
+  let str=0;
+  if(len>=8)str++;if(len>=16)str++;
+  if(document.getElementById('pw-U').checked&&document.getElementById('pw-l').checked)str++;
+  if(document.getElementById('pw-n').checked)str++;
+  if(document.getElementById('pw-s').checked)str++;
+  const cols=['#ff3333','#ff6600','#ffff00','#88ff00','#00ff88'];
+  const bar=document.getElementById('pw-str');
+  bar.style.cssText=`background:${cols[Math.min(str-1,4)]};width:${str/5*100}%;height:4px;border-radius:4px;box-shadow:0 0 10px ${cols[Math.min(str-1,4)]};transition:all .4s;`;
 }
-
-const link=document.getElementById("downloadLink");
-
-link.innerText="Processing...";
-
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-
-const arrayBuffer = await file.arrayBuffer();
-
-const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-
-const offlineContext = new OfflineAudioContext(
-audioBuffer.numberOfChannels,
-audioBuffer.length,
-audioBuffer.sampleRate
-);
-
-const source = offlineContext.createBufferSource();
-
-source.buffer = audioBuffer;
-
-source.connect(offlineContext.destination);
-
-source.start();
-
-const renderedBuffer = await offlineContext.startRendering();
-
-const wavBlob = bufferToWave(renderedBuffer, renderedBuffer.length);
-
-const url = URL.createObjectURL(wavBlob);
-
-link.href=url;
-
-link.download="audio.wav";
-
-link.innerText="Download Audio";
-
-}
-
-function bufferToWave(abuffer,len){
-
-const numOfChan = abuffer.numberOfChannels;
-
-const length = len * numOfChan * 2 + 44;
-
-const buffer = new ArrayBuffer(length);
-
-const view = new DataView(buffer);
-
-const channels = [];
-
-let offset = 0;
-
-let pos = 0;
-
-function setUint16(data){
-
-view.setUint16(pos,data,true);
-
-pos+=2;
-
-}
-
-function setUint32(data){
-
-view.setUint32(pos,data,true);
-
-pos+=4;
-
-}
-
-setUint32(0x46464952);
-setUint32(length-8);
-setUint32(0x45564157);
-
-setUint32(0x20746d66);
-setUint32(16);
-setUint16(1);
-setUint16(numOfChan);
-setUint32(abuffer.sampleRate);
-setUint32(abuffer.sampleRate*2*numOfChan);
-setUint16(numOfChan*2);
-setUint16(16);
-
-setUint32(0x61746164);
-setUint32(length-pos-4);
-
-for(let i=0;i<abuffer.numberOfChannels;i++){
-channels.push(abuffer.getChannelData(i));
-}
-
-while(pos<length){
-
-for(let i=0;i<numOfChan;i++){
-
-let sample=Math.max(-1,Math.min(1,channels[i][offset]));
-
-sample=(0.5+sample<0?sample*32768:sample*32767)|0;
-
-view.setInt16(pos,sample,true);
-
-pos+=2;
-
-}
-
-offset++;
-
-}
-
-return new Blob([buffer],{type:"audio/wav"});
-
-}
-
+function cpPW(){const pw=document.getElementById('pw-d').textContent;if(pw==='اضغط إنشاء...')return toast('❌ أنشئ كلمة سر أولاً','err');navigator.clipboard.writeText(pw).then(()=>toast('✅ تم نسخ كلمة السر!'));}
+genPW();
 </script>
-
 </body>
 </html>
